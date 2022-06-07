@@ -1,0 +1,119 @@
+.auth{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 100px auto 100px auto;
+    background-color: #E5E5E5;
+    height: 100vh;
+}
+.auth .hero{
+    background-color: white;
+    height: auto;
+    width: 550px;
+    border-radius: 15px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 10px 70px 10px 70px;
+}
+.auth .hero h3{
+    color: #7E98DF;
+    margin-top: 10px;
+    margin-bottom: 20px;
+}
+.auth .hero .title{
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    color: #7E98DF;
+    width: 100%;
+    margin-top: 10px;
+    margin-bottom: 20px;
+}
+.auth .hero .title .back{
+    border: none;
+    transform: rotate(45deg);
+    background-color: transparent;
+    border-bottom: 4px solid #7E98DF;
+    border-left: 4px solid #7E98DF;
+    width: 20px;
+    height: 20px;
+    color: #7E98DF;
+    outline: none;
+}
+.auth .hero .title h3{
+    margin-left: 130px;
+}
+.auth .hero h6{
+    width: 100%;
+    margin-bottom: 20px;
+}
+.auth .hero .form-input{
+    width: 100%;
+    margin: 10px 0px 10px 0px;
+}
+.auth .hero .form-input .title-input{
+    width: 100%;
+}
+.auth .hero .form-input .input{
+    padding: 5px 0px 5px 0px;
+    width: 100%;
+    border: none;
+    border-bottom: 1.7px solid black;
+}
+.auth .hero .form-input .input:hover{
+    border-bottom: 1.7px solid #7E98DF;
+}
+.auth .hero .form-input .input:focus{
+    border: none;
+    outline: none;
+    border-bottom: 1.7px solid #7E98DF;
+}
+.auth .hero .form-input .show-password{
+    position: absolute;
+    margin-left: -35px;
+    border: none;
+    background-color: transparent;
+    outline: none;
+}
+.auth .hero .blue-button{
+    margin: 20px 0px 20px 0px;
+    width: 100%;
+    height: 50px;
+    border-radius: 25px;
+    background-color: #7E98DF;
+    border: #7E98DF;
+    color: white;
+    font-size: larger;
+}
+.auth .hero .white-button{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 20px 0px 20px 0px;
+    width: 100%;
+    height: 50px;
+    border-radius: 25px;
+    background-color: white;
+    border: 2px solid#7E98DF;
+    color: #7E98DF;
+    font-size: larger;
+}
+.auth .hero .white-button i{
+    font-size: 25px;
+    font-weight: bolder;
+    margin-right: 10px;
+}
+.auth .hero .form-text{
+    display: flex;
+    align-items: center;
+}
+.auth .hero .form-text .line{
+    width: 100px;
+    border: 0.7px solid #848484;
+}
+.auth .hero .form-text p{
+    margin: 0px 35px 0px 35px;
+    color: #848484;
+}

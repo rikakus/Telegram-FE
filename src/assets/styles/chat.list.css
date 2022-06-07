@@ -1,0 +1,121 @@
+.chat .user {
+    height: 100vh;
+    min-width: 200px;
+    max-width: 350px;
+    width: 30%;
+    padding: 20px;
+}
+
+.chat .user header {
+    display: flex;
+    width: 100%;
+}
+
+.chat .user header h2 {
+    width: 150px;
+    color: #7E98DF;
+}
+
+.chat .user header .form-user {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-end;
+    width: 60%;
+    color: transparent;
+}
+
+.chat .user header .form-user .btn {
+    background-color: transparent;
+    color: #7E98DF;
+    border: none;
+    outline: none;
+}
+
+.chat .user header .form-user .dropdown-menu {
+    background-color: #7E98DF;
+    border-radius: 15px;
+    border-top-left-radius: 45px;
+    border-bottom-right-radius: 45px;
+}
+
+.chat .user header .form-user .dropdown-menu .dropdown-item {
+    color: white;
+    font-size: 25px;
+    height: 60px;
+    width: 240px;
+    padding: 15px;
+}
+.chat .user header .form-user .dropdown-menu .dropdown-item i{
+    height: 20px;
+    width: 40px;
+}
+
+.chat .user header .form-user .dropdown-menu .dropdown-item:hover {
+    color: #E5E5E5;
+    background-color: #7E98DF;
+    border-radius: 45px;
+    outline: none;
+}
+
+.chat .user .search-section {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+}
+
+.chat .user .search-section i {
+    z-index: 0;
+    color: #848484;
+    position: relative;
+    padding: 4px;
+    height: 30px;
+    width: 30px;
+    font-size: 25px;
+    margin-right: -30px;
+}
+
+.chat .user .search-section .search {
+    background-color: #FAFAFA;
+    height: 40px;
+    width: 100%;
+    border-radius: 15px;
+    border: none;
+    margin: 15px 0px;
+    padding-left: 35px;
+}
+
+.chat .user .contact {
+    overflow: scroll;
+    height: 80vh;
+}
+
+.chat .user .contact::-webkit-scrollbar {
+    display: none;
+}
+
+.chat .user .contact .form-contact {
+    display: flex;
+    justify-content: flex-start;
+    align-items: flex-start;
+    width: 100%;
+    border: none;
+    border-bottom: 1ypx solid #848484;
+    background-color: transparent;
+    outline: none;
+    height: 80px;
+}
+
+.chat .user .contact .img-contact {
+    background-color: #7E98DF;
+    height: 65px;
+    width: 65px;
+    border-radius: 10px;
+    margin: 3px;
+}
+
+.chat .user .contact .name-contact {
+    width: 60%;
+    margin: 3px;
+    text-align: left;
+}

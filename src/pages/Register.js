@@ -2,13 +2,15 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
 import "../assets/styles/auth.css";
+import Button from "../components/auth/Button";
+import Input from "../components/auth/Input";
+import Line from "../components/auth/Line";
 import { register } from "../redux/actions/auth";
 
 export default function Register() {
   const navigate = useNavigate();
   const [errors, setErrors] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
-  const [showPassword, setShowPassword] = useState(false);
   const [form, setForm] = useState({
     fullname: "",
     email: "",
@@ -43,41 +45,24 @@ export default function Register() {
             <h3>Register</h3>
           </div>
           <h6>Let’s create your account!</h6>
-          <div className="form-input">
-            <div className="title-input">Name</div>
-            <input
-              type="text"
-              className="input"
-              placeholder="  your name"
-              onChange={(e) => setForm({ ...form, fullname: e.target.value })}
-            />
-          </div>
-          <div className="form-input">
-            <div className="title-input">Email</div>
-            <input
-              type="text"
-              className="input"
-              placeholder="  example@gmail.com"
-              onChange={(e) => setForm({ ...form, email: e.target.value })}
-            />
-          </div>
-          <div className="form-input">
-            <div className="title-input">Password</div>
-            <input
-              type={showPassword ? "text" : "password"}
-              className="input"
-              placeholder="  your password"
-              onChange={(e) => setForm({ ...form, password: e.target.value })}
-            />
-            <button
-              className="show-password"
-              onClick={() => setShowPassword(!showPassword)}
-            >
-              <span
-                className={showPassword ? "fas fa-eye" : "fas fa-eye-slash"}
-              ></span>
-            </button>
-          </div>
+          <Input
+            title="Name"
+            type="text"
+            placeholder="  your name"
+            setData={(e) => setForm({ ...form, fullname: e.target.value })}
+          />
+          <Input
+            title="Email"
+            type="email"
+            placeholder="  example@gmail.com"
+            setData={(e) => setForm({ ...form, email: e.target.value })}
+          />
+          <Input
+            title="Password"
+            type="password"
+            placeholder="  your password"
+            setData={(e) => setForm({ ...form, password: e.target.value })}
+          />
           {errors.length > 0 && (
             <div className="alert alert-danger mx-0" style={{ width: "100%" }}>
               <ul className="m-0">
@@ -109,14 +94,8 @@ export default function Register() {
               Register
             </button>
           )}
-          <div className="form-text">
-            <hr className="line" />
-            <p>Register with</p>
-            <hr className="line" />
-          </div>
-          <button className="white-button">
-            <i className="fa-brands fa-google"></i> Google
-          </button>
+          <Line title="Register with" />
+          <Button type="google" />
         </div>
       </section>
     </>

@@ -1,48 +1,65 @@
-import React, { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
-import axios from "axios";
+/* eslint-disable react-hooks/exhaustive-deps */
+import React, { useEffect, useState } from "react";
 import Swal from "sweetalert2";
 import "../../assets/styles/chat.edit.css";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  editProfile,
+  editProfilePhoto,
+  getDetailUsers,
+} from "../../redux/actions/users";
+import Title from "./Title";
+import Profile from "./Profile";
 
 export default function Edit(props) {
-  const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
-  const [users, setUsers] = useState(JSON.parse(localStorage.getItem("users")));
+  const [users, setUsers] = useState("");
   const [form, setForm] = useState({
-    fullname: users.fullname,
-    phone: users.phone,
-    bio: users.bio,
+    fullname: "",
+    phone: "",
+    bio: "",
   });
   const [isEdit, setIsEdit] = useState(false);
+  const dispatch = useDispatch();
 
   const inputData = async () => {
     setLoading(true);
-    await axios
-      .put(`${process.env.REACT_APP_BACKEND_URL}/users/${users.id}`, form)
+    await editProfile(form)
       .then(async (response) => {
-        await getData();
+        await dispatch(getDetailUsers());
         Swal.fire(response.data.message, "", "success");
-        return;
-      })
-      .catch((err) => {
-        Swal.fire(err.response.data.message, err.response.data.error, "error");
-      });
-    setIsEdit(false);
-  };
-  const getData = async () => {
-    await axios
-      .get(`${process.env.REACT_APP_BACKEND_URL}/users/${users.id}`)
-      .then((response) => {
-        setUsers(response.data.data);
-        setPhoto(response.data.data.photo);
-        localStorage.setItem("users", JSON.stringify(response.data.data));
+        localStorage.setItem("users", JSON.stringify(detail.data));
         setLoading(false);
         return;
       })
       .catch((err) => {
+        setLoading(false);
         Swal.fire(err.response.data.message, err.response.data.error, "error");
       });
+    setIsEdit(false);
   };
+
+  useEffect(() => {
+    dispatch(getDetailUsers());
+  }, []);
+
+  const detail = useSelector((state) => {
+    return state.detailUser;
+  });
+
+  useEffect(() => {
+    setUsers(detail.data);
+    setPhoto(detail.data.photo);
+    setForm({
+      fullname: detail.data.fullname,
+      phone: detail.data.phone,
+      bio: detail.data.bio,
+    });
+  }, [detail]);
+
+  useEffect(() => {
+    localStorage.setItem("users", JSON.stringify(users));
+  }, [users]);
 
   const [photo, setPhoto] = useState(users.photo || "profile.jpg");
   const [isChangePhoto, setIsChangePhoto] = useState(false);
@@ -50,88 +67,76 @@ export default function Edit(props) {
     const formData = new FormData();
     formData.append("photo", photo);
     setLoading(true);
-    await axios
-      .put(
-        `${process.env.REACT_APP_BACKEND_URL}/users/${users.id}/photo`,
-        formData
-      )
+    await editProfilePhoto(formData)
       .then(async (response) => {
-        await getData();
+        await dispatch(getDetailUsers());
         Swal.fire(response.data.message, "", "success");
+        setLoading(false);
         setIsChangePhoto(false);
         return;
       })
       .catch((err) => {
+        setLoading(false);
         Swal.fire(err.response.data.message, err.response.data.error, "error");
+        setIsChangePhoto(false);
       });
   };
 
   return (
     <section
       className="detail-user"
+      style={window.innerWidth > 550 ? null : { width: "100%" }}
       hidden={props.data.getDetail ? "" : "hidden"}
     >
-      <div className="title">
-        <button
-          className="back"
-          onClick={() => props.data.setGetDetail(!props.data.getDetail)}
-        ></button>
-        <h3>{users.fullname}</h3>
-      </div>
+      <Title
+        fullname={users.fullname}
+        setProfile={() => props.data.setGetDetail(!props.data.getDetail)}
+      />
 
+      {loading ? (
+        <button className="btn btn-success btn-lg ms-2" type="button" disabled>
+          <span
+            className="spinner-border spinner-border-sm"
+            role="status"
+            aria-hidden="true"
+          ></span>{" "}
+          Loading...
+        </button>
+      ) : (
+        <Profile
+          photo={users.photo}
+          fullname={users.fullname}
+          phone={users.phone}
+        />
+      )}
       <div className="detail">
-        {loading ? (
+        <label htmlFor="files" className="white-button">
+          Edit Photo
+        </label>
+        <input
+          className="hidden"
+          hidden
+          type="file"
+          id="files"
+          onChange={(e) => {
+            setPhoto(e.target.files[0]);
+            setIsChangePhoto(true);
+          }}
+        />
+        {isChangePhoto && (
           <button
-            className="btn btn-success btn-lg ms-2"
-            type="button"
-            disabled
+            onClick={handleChangeImage}
+            type="submit"
+            className="blue-button"
           >
-            <span
-              className="spinner-border spinner-border-sm"
-              role="status"
-              aria-hidden="true"
-            ></span>{" "}
-            Loading...
+            Save Photo
           </button>
-        ) : (
-          <>
-            <img
-              src={`${process.env.REACT_APP_BACKEND_URL}/${photo}`}
-              alt="Profile"
-              className="img-user"
-            />
-            <h3>{form.fullname}</h3>
-            <p>{form.phone ? form.phone : "-"}</p>
-            <label htmlFor="files" className="white-button">
-              Edit Photo
-            </label>
-            <input
-              className="hidden"
-              hidden
-              type="file"
-              id="files"
-              onChange={(e) => {
-                setPhoto(e.target.files[0]);
-                setIsChangePhoto(true);
-              }}
-            />
-            {isChangePhoto && (
-              <button
-                onClick={handleChangeImage}
-                type="submit"
-                className="blue-button"
-              >
-                Save Photo
-              </button>
-            )}
-          </>
         )}
       </div>
-
       <div className="account">
         <h3>Account</h3>
         <h6 hidden={!isEdit ? "" : "hidden"}>
-          {form.phone ? form.phone : "-"}
+          {users.phone ? users.phone : "-"}
         </h6>
         <input
           type="text"

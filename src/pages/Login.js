@@ -2,13 +2,15 @@ import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
 import "../assets/styles/auth.css";
+import Button from "../components/auth/Button";
+import Input from "../components/auth/Input";
+import Line from "../components/auth/Line";
 import { login } from "../redux/actions/auth";
 
 export default function Login() {
   const navigate = useNavigate();
   const [errors, setErrors] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
-  const [showPassword, setShowPassword] = useState(false);
   const [form, setForm] = useState({
     email: "",
     password: "",
@@ -19,10 +21,11 @@ export default function Login() {
     setIsLoading(true);
     login(form)
       .then((response) => {
+        console.log(response);
         localStorage.setItem("token", response.data.data.token);
         localStorage.setItem("users", JSON.stringify(response.data.data.id));
         Swal.fire("", response.data.message, "success");
-        return navigate("/chat");
+        return navigate("/");
       })
       .catch((err) => {
         setErrors(err);
@@ -36,33 +39,19 @@ export default function Login() {
           <h3>Login</h3>
           <h6>Hi, Welcome back!</h6>
           <form onSubmit={(e) => onSubmit(e)} style={{ width: "100%" }}>
-            <div className="form-input">
-              <div className="title-input">Email</div>
-              <input
-                type="email"
-                className="input"
-                placeholder="  example@gmail.com"
-                onChange={(e) => setForm({ ...form, email: e.target.value })}
-              />
-            </div>
-            <div className="form-input">
-              <div className="title-input">Password</div>
-              <input
-                type={showPassword ? "text" : "password"}
-                className="input"
-                placeholder="  your password"
-                onChange={(e) => setForm({ ...form, password: e.target.value })}
-              />
-              <button
-                type="button"
-                className="show-password"
-                onClick={() => setShowPassword(!showPassword)}
-              >
-                <span
-                  className={showPassword ? "fas fa-eye" : "fas fa-eye-slash"}
-                ></span>
-              </button>
-            </div>
+            <Input
+              title="Email"
+              type="email"
+              placeholder="  example@gmail.com"
+              setData={(e) => setForm({ ...form, email: e.target.value })}
+            />
+            <Input
+              title="Password"
+              type="password"
+              placeholder="  your password"
+              setData={(e) => setForm({ ...form, password: e.target.value })}
+            />
+
             <p style={{ color: "#7E98DF", textAlign: "right", width: "100%" }}>
               <Link to="/forgot" style={{ color: "#7E98DF" }}>
                 Forgot password?
@@ -94,19 +83,11 @@ export default function Login() {
                 Loading...
               </button>
             ) : (
-              <button type="submit" className="blue-button">
-                Login
-              </button>
+              <Button type="submit" title="Login" />
             )}
           </form>
-          <div className="form-text">
-            <hr className="line" />
-            <p>Login with</p>
-            <hr className="line" />
-          </div>
-          <button className="white-button">
-            <i className="fa-brands fa-google"></i> Google
-          </button>
+          <Line title="Login with" />
+          <Button type="google" />
           <p>
             Don't have an account?
             <Link

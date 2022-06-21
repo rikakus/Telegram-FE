@@ -1,85 +1,79 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useState, useEffect } from "react";
 import "../../assets/styles/chat.list.css";
+import { useDispatch, useSelector } from "react-redux";
+import { getListUsers } from "../../redux/actions/users";
 import {
   Dropdown,
   DropdownToggle,
   DropdownMenu,
   DropdownItem,
 } from "reactstrap";
-import axios from "axios";
-import io from "socket.io-client";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import dateFormat from "dateformat";
+import { Code } from "react-content-loader";
 
 export default function List(props) {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
   const [queryParams] = useSearchParams();
-  const [socketio, setSocketio] = useState(null);
   const [isOpen, setIsOpen] = useState(false);
   const users = JSON.parse(localStorage.getItem("users"));
-
-  const [loading, setLoading] = useState(false);
   const [listUser, setListUser] = useState([]);
   const [login, setlogin] = useState({});
   const [error, setError] = useState("");
   const [search, setSearch] = useState(queryParams);
 
-  const getData = () => {
-    setError("");
-    axios
-      .get(
-        `${process.env.REACT_APP_BACKEND_URL}/users?login=${users.id}&search=${search}`
-      )
-      .then((response) => {
-        setListUser(response.data.data);
-        setLoading(false);
-      })
-      .catch((err) => {
-        setError(err.response.data.error);
-        setLoading(false);
-      });
-  };
-
   const onSubmit = (e) => {
     e.preventDefault();
-    navigate(`/chat?search=${search}`);
-    getData();
+    navigate(`/?search=${search}`);
+    dispatch(getListUsers(search));
   };
 
+  const list = useSelector((state) => {
+    return state.listUser;
+  });
+
   useEffect(() => {
-    setLoading(true);
     setlogin(users);
-    getData();
+    dispatch(getListUsers(search));
   }, []);
 
   useEffect(() => {
-    const socket = io(process.env.REACT_APP_BACKEND_URL);
-    socket.on("send-message-response", (response) => {
-      const receiver = JSON.parse(localStorage.getItem("receiver"));
-      if (
-        receiver.fullname === response[0].sender ||
-        receiver.fullname === response[0].receiver
-      ) {
-        props.data.setListChat(response);
-      }
-    });
-    setSocketio(socket);
-  }, []);
+    if (list.isError) {
+      setError(list.isError);
+    }
+    setListUser(list.data);
+  }, [list]);
 
   const selesctReceiver = (item) => {
     props.data.setListChat([]);
     props.data.setActiveReceiver(item);
     localStorage.setItem("receiver", JSON.stringify(item));
-    socketio.emit("join-room", login);
+    props.socketio.emit("join-room", login);
     const data = {
       sender: login.id,
       receiver: item.id,
     };
-    socketio.emit("chat-history", data);
+    props.socketio.emit("chat-history", data);
   };
 
   return (
-    <section className="user" hidden={!props.data.getDetail ? "" : "hidden"}>
+    <section
+      className="user"
+      style={window.innerWidth > 550 ? null : { width: "100%" }}
+      hidden={
+        window.innerWidth > 550
+          ? !props.data.getDetail
+            ? ""
+            : "hidden"
+          : !props.data.activeReceiver.id
+          ? !props.data.getDetail
+            ? ""
+            : "hidden"
+          : "hidden"
+      }
+    >
       <header>
         <h2>Telegram</h2>
         <Dropdown
@@ -124,7 +118,7 @@ export default function List(props) {
           <i className="fa-solid fa-magnifying-glass"></i>
           <input
             type="text"
-            placeholder="  type your message..."
+            placeholder="type your message..."
             className="search"
             onChange={(e) => {
               setSearch(e.target.value);
@@ -139,40 +133,49 @@ export default function List(props) {
       </section>
 
       <section className="contact">
-        {loading
-          ? "loading"
-          : listUser.map((item, index) =>
-              item.id !== login.id ? (
-                <button
-                  type="button"
-                  className="form-contact"
-                  onClick={() => selesctReceiver(item)}
-                  key={index}
-                >
-                  <img
-                    src={`${process.env.REACT_APP_BACKEND_URL}/${
-                      item.photo ? item.photo : "profile.jpg"
-                    }`}
-                    alt="Profile"
-                    className="img-contact"
-                  />
-                  <div className="name-contact">
-                    <h3>{item.fullname}</h3>
-                    <p>
-                      {item.message.length === 0 ? "" : item.message[0].message}
-                    </p>
-                  </div>
-                  <div className="detail-message">
-                    <p>
-                      {item.message.length === 0
-                        ? ""
-                        : dateFormat(item.message[0].date, "HH:MM")}
-                    </p>
-                    {/* <i>new</i> */}
-                  </div>
-                </button>
-              ) : null
-            )}
+        {list.isLoading ? (
+          <Code />
+        ) : list.isError ? (
+          <h4 style={{ width: "100%", textAlign: "center" }}>Data Not Found</h4>
+        ) : (
+          listUser.map((item, index) =>
+            item.id !== login.id ? (
+              <button
+                type="button"
+                className="form-contact"
+                style={
+                  JSON.parse(localStorage.getItem("receiver"))?.id === item.id
+                    ? { backgroundColor: "#F5F5F5" }
+                    : null
+                }
+                onClick={() => selesctReceiver(item)}
+                key={index}
+              >
+                <img
+                  src={`${process.env.REACT_APP_BACKEND_URL}/${
+                    item.photo ? item.photo : "profile.jpg"
+                  }`}
+                  alt="Profile"
+                  className="img-contact"
+                />
+                <div className="name-contact">
+                  <h4>{item.fullname}</h4>
+                  <p>
+                    {item.message.length === 0 ? "" : item.message[0].message}
+                  </p>
+                </div>
+                <div className="detail-message">
+                  <p>
+                    {item.message.length === 0
+                      ? ""
+                      : dateFormat(item.message[0].date, "HH:MM")}
+                  </p>
+                  {/* <i>new</i> */}
+                </div>
+              </button>
+            ) : null
+          )
+        )}
       </section>
     </section>
   );

@@ -87,7 +87,7 @@ To get a local copy up and running follow these simple example steps.
 
 ### Landing Page
 
-![Landing Page](/public/Telegram chat.png)
+![Landing Page](public/TelegramChat.png)
 
 ### Login
 
@@ -95,11 +95,11 @@ To get a local copy up and running follow these simple example steps.
 
 ### Edit Profile
 
-![Profile](/public/telegram edit.png)
+![Profile](/public/telegramEdit.png)
 
 ### Profile another user
 
-![Profile](/public/telegram profile.png)
+![Profile](/public/telegramProfile.png)
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 

@@ -20,7 +20,6 @@ export default function Register() {
     e.preventDefault();
     setErrors([]);
     setIsLoading(true);
-    console.log(errors);
     register(form)
       .then((response) => {
         console.log(response);
@@ -28,9 +27,10 @@ export default function Register() {
         return navigate("/login");
       })
       .catch((err) => {
+        console.log(err);
         setErrors(err);
       });
-    console.log(errors);
+
     setIsLoading(false);
   };
   return (

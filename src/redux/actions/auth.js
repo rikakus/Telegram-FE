@@ -8,6 +8,7 @@ export const register = (form) => {
         resolve(response);
       })
       .catch((err) => {
+        console.log(err);
         if (err.response) {
           if (Array.isArray(err.response.data.error)) {
             reject(err.response.data.error);

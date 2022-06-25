@@ -118,9 +118,11 @@ export default function Message(props) {
                   <p>cek</p>
                 </div>
               </div>
-              <i className="fa-solid fa-grip">
-                <button onClick={() => setProfile(true)}></button>
-              </i>
+              {!profile ? (
+                <i className="fa-solid fa-grip">
+                  <button onClick={() => setProfile(true)}></button>
+                </i>
+              ) : null}
             </header>
 
             <div className="content" id="chatMenuMessage">

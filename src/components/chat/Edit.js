@@ -55,11 +55,11 @@ export default function Edit(props) {
       phone: detail.data.phone,
       bio: detail.data.bio,
     });
-  }, [detail]);
+  }, [detail.data]);
 
-  useEffect(() => {
-    localStorage.setItem("users", JSON.stringify(users));
-  }, [users]);
+  // useEffect(() => {
+  //   localStorage.setItem("users", JSON.stringify(users));
+  // }, [users]);
 
   const [photo, setPhoto] = useState(users.photo || "profile.jpg");
   const [isChangePhoto, setIsChangePhoto] = useState(false);

@@ -120,7 +120,7 @@ Distributed under the MIT License. See `LICENSE.txt` for more information.
 
 Ian Pangestu - [@ianpangestu082](https://twitter.com/ianpangestu082) - ianpangestu082@gmail.com
 
-Project Link: [https://github.com/rikakus/Telegram-FE](https://github.com/rikakus/Telegram-FE)
+Project Link: [https://telegram-rikakus.vercel.app](https://telegram-rikakus.vercel.app)
 
 Link API:  [https://github.com/rikakus/Telegram-BE](https://github.com/rikakus/Telegram-BE)
 

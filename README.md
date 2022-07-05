@@ -41,7 +41,7 @@
 <!-- ABOUT THE PROJECT -->
 ## About The Project
 
-![Landing Page](/public/Telegram chat.png)
+![Landing Page](/public/TelegramChat.png)
 Telegram is a real-time chat website developed with the ReactJS framework and Socket technology where users can register, login, search for other usernames, chat with other users in real time, and edit their own profiles.
 
 <p align="right">(<a href="#top">back to top</a>)</p>
